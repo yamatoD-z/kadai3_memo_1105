@@ -19,6 +19,49 @@ main{
     border-bottom:1px solid #ccc;
     position:relative;
 }
+
+br{
+    font-size: 5px;
+    height: 10px;
+}
+
+#wrap{
+    display:flex;
+    border-bottom: 1px solid #000000;
+}
+
+#left_wrap{
+    margin-left: 2.5%;
+    padding-right: 2.5%;
+    left: 5%;
+    width: 45%;
+    border-right:1px solid #000000;
+}
+
+#right_wrap{
+    margin: 0%;
+    width: 45%;
+    padding-left: 2.5%;
+}
+
+#shops{
+    font-size: 35px;
+    margin: 20px 0 0 0;
+    height: 40px;
+    text-align: center;
+    border: 1px solid #000000;
+
+}
+
+.shopping_item{
+    width: auto;
+}
+
+#save, #clear{
+    background-color: #000000;
+    color: white;
+}
+
 footer{
     background-color: #fff;
     border-bottom:1px solid #ccc;

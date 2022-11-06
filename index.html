@@ -9,20 +9,39 @@
 <header>
 <h1>Shopping List</h1>
 </header>
-<main>
-    <div id="pickup">買うものを選択してください</div>
-   
-   
-    <input type="text" id="key">
-    <textarea id="memo"></textarea>
-    <ul>
-        <li id="save">Save</li>
-        <li id="clear">Clear</li>
-    </ul>
-</main>
+
+<div id="wrap">
+    <div id="left_wrap">
+        買うものを選択。追加があれば、入力して、追加ボタンを押す。
+        <div id="pickup"></div>
+    
+    </div>
+
+    <div id="right_wrap">
+        買うものリスト。ボタン押せば、”済”に移行
+        <div id="shopping"></div>
+        <br>
+        済
+        <div id="completed"></div>
+        <button id="save">追加商品を記録しておく</button>
+    
+    </div>
+</div>
+
+
+
+
+
+
+
+
 <table id="list">
+    LocalStorageの保存状況
 <!-- ここに追加データが挿入される -->
 </table>
+
+<button id="save">LocalStorage保存</button>
+<button id="clear">LocalStorage消去</button>
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
