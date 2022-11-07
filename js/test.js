@@ -15,9 +15,9 @@
 // １．マスターデータの用意
 //基本セットを作っておく
 let shopping_default =[
-    ['supermarket','キャベツ','トマト','魚','ジュース','牛','豚','鳥','きゅうり','パン','牛乳','豆腐','納豆','ドレッシング'],
+    ['supermarket','卵','米','ネギ','チーズ','ごみ袋','キャベツ','トマト','魚','ジュース','牛','豚','鳥','きゅうり','パン','牛乳','豆腐','納豆','ドレッシング'],
     ['other_shop','薬局で漢方','薬局で洗顔','地下で夕飯','地下で手土産','本屋で本','塾のノート','古着屋'],
-    ['other_ToDo','クリーニング受取','図書館返却','髪を切る','メルカリ発送']
+    ['other_ToDo','クリーニング受取','図書館返却','髪を切る','ユニクロ受取','メルカリ発送']
 ];
 
 //過去に基本セットに追加をして、ローカルストレージに保存していれば、ローカルストレージに保存されているものをマスターとする
@@ -54,8 +54,10 @@ let master_back = JSON.parse(localStorage.getItem('shopping_master'));
 // ３．マスターから、買うものリストの候補を表示
 
 // マスターの店名と商品一覧を表示。商品はボタンで表示されるようにする。
+// そのために、店名を配列から取り出してきて、次の店名に行く前に、
+// 商品名をボタン化するhtmlを繰り返し処理で書く。
+// マスターの商品名が追加されても、ページ更新時に、ボタンが追加される
 let shop_name_html ='';
-
 master_back.forEach(elem => {
     let shop_name = elem[0]; // master_back[elem][0]とすると、0に対してエラーがでる
     shop_name_html +=`
@@ -77,31 +79,36 @@ master_back.forEach(elem => {
             </button>  
             `
             };
-// 複数ボタンで同じ処理をさせるなら、idじゃなくてclassを目印にする。idだと、1つ目のボタンしか反応しなかった
+            // 複数ボタンで同じ処理をさせるなら、idじゃなくてclassを目印にする。idだと、1つ目のボタンしか反応しなかった
     });
-
+// 左側にボタンが発生。画面表示時点で処理は済んでいる。
 $('#pickup').html(shop_name_html);
 
+// ４．買うものリストの作成
 
-// オブジェクトのキーをボタン名にしておく
-// ボタンを押すと、それが実際の買い物リストに追加されていく。
-// 基本セットにない追加商品があれば、インプット欄に入力。
-// 追加商品は、基本セットにも追加される
-// 念のため、ローカルストレージに保存。
-
-// 関数でやろうとして、一度、うまくいったのに、ダメになった
-// function oklist(){
-//     shopping_list[0].push($(this).attr('name'));
-//     console.log(shopping_list);
-// }
-// $('.goods_oksuper').on('click',oklist());
-
+// ボタンを押すと、それが右の買い物リストに追加されていく。
+// マスターにない追加商品があれば、インプット欄に入力。
+// 追加商品は、ローカルストレージを通じて、マスターにも追加される
 
 // 買うものリストは別の配列で管理。空の配列を作成
+// この配列を使って、右側に表示させようかと思い、用意。ただ、個別ボタンで対応。
+// せっかくなので、買い物履歴を日時をキーにしてローカルストレージを使って残すことにする。
 let shopping_list =[[],[],[]];
-let shopping_list_html ='';
 
-// 追加アイテムの処理
+const youbi = ["日","月","火","水","木","金","土"];
+
+let date1 = new Date();
+let date2 = date1.getFullYear() + "年" + 
+            (date1.getMonth() + 1)  + "月" + 
+            date1.getDate() + "日" + 
+            date1.getHours() + "時" + 
+            date1.getMinutes() + "分" + 
+            date1.getSeconds() + "秒" + 
+            date1.getMilliseconds() + "ミリ秒" + 
+            youbi[date1.getDay()] + "曜日" // 0は日曜日～6は土曜日
+console.log(date2); 
+
+// ４－１．追加アイテムの処理
 
 // まずはベタ打ち。
 // $('#add_supermarket').on('click',function(){
@@ -117,12 +124,13 @@ let shopping_list_html ='';
 //     $('#shopping').html(shopping_list_html);
 // });
 
-// 動いたので、一般化
-function add_item(add_button,add_input){
+// 動いたので、一般化。iは配列内のどの配列に追加するか。
+let shopping_list_html ='';
+function add_item(add_button,i,add_input){
     $(add_button).on('click',function(){
     let add_item =$(add_input).val();
-    shopping_list[0].push(add_item);
-    shopping_master[0].push(add_item);
+    shopping_list[i].push(add_item);
+    shopping_master[i].push(add_item);
     shopping_list_html +=`
     <button class='shopping_item' name=${add_item}>
             ${add_item}
@@ -135,13 +143,13 @@ function add_item(add_button,add_input){
 }
 
 // それぞれのボタンに応じて設定。jQueryの場合は''も付けておく
-add_item('#add_supermarket','#new_item_supermarket');
-add_item('#add_other_shop','#new_item_other_shop');
-add_item('#add_other_ToDo','#new_item_other_ToDo');
+add_item('#add_supermarket',0,'#new_item_supermarket');
+add_item('#add_other_shop',1,'#new_item_other_shop');
+add_item('#add_other_ToDo',2,'#new_item_other_ToDo');
 
 
 
-// 買うものリストへ移す処理
+// ４－２．表示されている商品毎のボタンを押して、買うものリストへ移す処理
 
 // まずはベタ打ち。
 // $('.goods_supermarket').on('click',function(){
@@ -159,10 +167,10 @@ add_item('#add_other_ToDo','#new_item_other_ToDo');
 //         });
 
 // 動いたので、一般化
-function listing(goods){
+function listing(goods,i){
     $(goods).on('click',function(){
     let shopping_item = $(this).attr('name');
-    shopping_list[1].push(shopping_item);
+    shopping_list[i].push(shopping_item);
     console.log(shopping_list,'list');
     localStorage.setItem('shopping_list', shopping_list);
     shopping_list_html +=`
@@ -172,17 +180,27 @@ function listing(goods){
             <br>  
             `;
     $('#shopping').html(shopping_list_html);
+    let shopping_list_JSON= JSON.stringify(shopping_list);
+    localStorage.setItem(date2,shopping_list_JSON);
 });
 }
 
 // それぞれのボタンに応じて設定。jQueryの場合は''も付けておく
-listing('.goods_supermarket');
-listing('.goods_other_shop');
-listing('.goods_other_ToDo');
+// 店名毎にクラス名を分けたので、クラスごとに実行。
+// ただ、右側の買うものリスト上、細かく店を分ける必要はなかったので、区別せず。
+// もしやるなら、listingのタグを分けて、htmlを加える場所も引数で変える
+listing('.goods_supermarket',0);
+listing('.goods_other_shop',1);
+listing('.goods_other_ToDo',2);
 
+// ４－３．買い物リストを日時をキーにローカルストレージへ
+
+
+
+
+// ５．買ったら、右側のボタンを押して、済に移していく
 
 let completed_html ='';
-
 $(document).on('click','.shopping_item',function(){
     let completed_item = $(this).attr('name');
     console.log(completed_item);
@@ -195,7 +213,8 @@ $(document).on('click','.shopping_item',function(){
     $('#completed').html(completed_html);
 });
 
-// jQueryであとから追加した要素には単純にクリックメソッドは動かない
+// jQueryであとから追加した要素には単純にクリックメソッドは動かない。
+// なので、documentを使った操作。これが出来なかったら、リロードさせるしかないのか、と思案していた。
 // https://qumeru.com/magazine/401
 // $('.shopping_item').on('click',function(){
 //     let completed_item = $(this).attr('name');
@@ -211,18 +230,8 @@ $(document).on('click','.shopping_item',function(){
 // });
 
 
-
-
-// ボタンを押したら、同時に、実際の買い物リストも更新して表示させる。
-// 実際の買い物リストも、ボタンで表示。買ったら、クリック。
-// クリックされたら、ボタンの色を変えるまたはボタンを消す。
-
-
-
-
-
-
-
+// 関連ボタン
+// 元々あったボタンを引き継ぎつつ、元データが配列である点などを修正。
 //1.Save クリックイベント
 $("#save").on("click",function(){
     master_json = JSON.stringify(shopping_master);
