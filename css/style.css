@@ -74,6 +74,13 @@ button {
     color: white;
 }
 
+#save:hover, #clear:hover{
+    
+        background: #0d7dfd;
+        color:#fff;
+    
+}
+
 footer{
     background-color: #fff;
     border-bottom:1px solid #ccc;
