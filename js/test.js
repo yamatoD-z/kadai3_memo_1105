@@ -76,8 +76,12 @@ master_back.forEach(elem => {
         shop_name_html +=`
             <button class=goods_${shop_name} name=${elem[i]}>
             ${elem[i]}
-            </button>  
+            </button>              
             `
+        // 3アイテム毎に改行。
+            if(i%3===0){
+            shop_name_html +=`<br>`
+        }
             };
             // 複数ボタンで同じ処理をさせるなら、idじゃなくてclassを目印にする。idだと、1つ目のボタンしか反応しなかった
     });
@@ -181,6 +185,7 @@ function listing(goods,i){
             `;
     $('#shopping').html(shopping_list_html);
     let shopping_list_JSON= JSON.stringify(shopping_list);
+    // date2はブラウザ更新時点で確定。そのため、いつボタンを教えても、固有のKeyになる
     localStorage.setItem(date2,shopping_list_JSON);
 });
 }
@@ -213,7 +218,7 @@ $(document).on('click','.shopping_item',function(){
     $('#completed').html(completed_html);
 });
 
-// jQueryであとから追加した要素には単純にクリックメソッドは動かない。
+// jQueryで追加した要素には、もう一度jQueryによるクリックメソッドは動かない。
 // なので、documentを使った操作。これが出来なかったら、リロードさせるしかないのか、と思案していた。
 // https://qumeru.com/magazine/401
 // $('.shopping_item').on('click',function(){
