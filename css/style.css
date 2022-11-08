@@ -2,7 +2,7 @@ body{
     margin:0;
     padding:0;
     text-align:left;
-    font-size: 32px;
+    font-size: 25px;
     width:100%;
 }
 header{
@@ -43,6 +43,10 @@ br{
     left: 5%;
     width: 45%;
     border-right:1px solid #000000;
+}
+
+button {
+    font-size: 20px;
 }
 
 #right_wrap{
