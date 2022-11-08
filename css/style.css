@@ -46,7 +46,8 @@ br{
 }
 
 button {
-    font-size: 20px;
+    font-size: 15px;
+    margin: 5px;
 }
 
 #right_wrap{
@@ -129,12 +130,12 @@ table{
 }
 th{
     width:30%;
-    font-size:24px;
+    font-size:12px;
     background-color:#d0e7fc;
     border-bottom: 1px solid #8dc3f5;
 }
 td{
-    font-size:16px;
+    font-size:12px;
     background-color:rgb(241, 239, 239);
     border-bottom: 1px solid #8dc3f5;
 }
