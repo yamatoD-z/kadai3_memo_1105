@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>ShoppingList</title>
+<title>Shopping/ToDo List</title>
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -12,18 +12,19 @@
 
 <div id="wrap">
     <div id="left_wrap">
-        買うものを選択。追加があれば、入力して、追加ボタンを押す。
+        1.買うもの、やることを選択。<br><span>追加があれば、入力して、追加ボタンを押す。</span>
         <div id="pickup"></div>
     
     </div>
 
     <div id="right_wrap">
-        買うものリスト。ボタン押せば、”済”に移行
+        2.買うものリスト。ボタン押せば、”済”に移行
         <div id="shopping"></div>
         <br>
-        済
+        3.済
         <div id="completed"></div>
-        <button id="save">追加商品を記録しておくボタン</button>
+        <br>
+        4.<button id="save">追加商品を記録しておくボタン</button>
         <span>（ボタン押した後、ブラウザ更新すれば、左側で反映される）</span>
     
     </div>
@@ -38,6 +39,7 @@
 
 <table id="list">
     LocalStorageの保存状況
+    <br><span>過去の買いものリストの履歴もある</span>
 <!-- ここに追加データが挿入される -->
 </table>
 
